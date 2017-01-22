@@ -1,0 +1,61 @@
+import java.util.*;
+class FCFS implements Comparator<FCFS>,Comparable<FCFS>{
+    int p,at,bt,ct,tat,wt;
+    Scanner s=new Scanner(System.in);
+    void create(){
+        System.out.println("Enter details of process:");
+        this.p=s.nextInt();
+        this.at=s.nextInt();
+        this.bt=s.nextInt();
+    }
+    @Override
+    public int compareTo(FCFS a){
+        return at - a.at;
+        
+    }
+    @Override
+    public int compare(FCFS a1,FCFS a2){
+        return a1.at - a2.at;
+    }
+    public static void main(String[] args){
+        float Ttat=0,Twt=0;
+        Scanner s=new Scanner(System.in);
+        System.out.println("Enter no. of processes: ");
+        int n=s.nextInt();
+        FCFS fc[]=new FCFS[n];
+        for(int i=0;i<n;i++){
+            fc[i]=new FCFS();
+            fc[i].create();
+        }
+        List<FCFS> f=new ArrayList<>();
+        for(int i=0;i<n;i++){
+            f.add(fc[i]);
+        }
+        Collections.sort(f);
+        f.get(0).ct=f.get(0).at+f.get(0).bt;
+        for(int i=0;i<n-1;i++){
+            if(f.get(i+1).at<=f.get(i).ct){
+                f.get(i+1).ct=f.get(i+1).bt+f.get(i).ct;
+            }
+            else{
+                f.get(i+1).ct=f.get(i+1).at+f.get(i+1).bt;
+            }
+           
+        }
+        
+        for(int j=0;j<=n-1;j++){
+            f.get(j).tat=f.get(j).ct-f.get(j).at;
+            f.get(j).wt=f.get(j).tat-f.get(j).bt;
+            Ttat=Ttat+f.get(j).tat;
+            Twt=Twt+f.get(j).wt;
+        }
+        System.out.println("id\tAT\tBT\tCT\tTAT\tWT");
+        for(int c=0;c<n;c++){
+            System.out.println(f.get(c).p+"\t"+f.get(c).at+"\t"+f.get(c).bt+"\t"+f.get(c).ct+"\t"+f.get(c).tat+"\t"+f.get(c).wt);
+            
+        }
+        System.out.println("Avg TAT ="+Ttat/n);
+        System.out.println("Avg WT ="+Twt/n);
+    }
+    
+}
